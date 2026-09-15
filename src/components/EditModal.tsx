@@ -17,6 +17,7 @@ import {
   Check,
   Save,
   MessageSquare,
+  ExternalLink,
 } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext.tsx';
 import { ProjectItem, CertificationItem, ExperienceItem, AchievementItem } from '../types.ts';
@@ -31,6 +32,7 @@ export const EditModal: React.FC = () => {
     updatePersonalInfo,
     updateProject,
     updateEducation,
+    updateCertification,
     addCertification,
     deleteCertification,
     updateExperience,
@@ -55,6 +57,7 @@ export const EditModal: React.FC = () => {
   const [tagline, setTagline] = useState(data.personalInfo.tagline);
   const [intro, setIntro] = useState(data.personalInfo.intro);
   const [email, setEmail] = useState(data.personalInfo.email);
+  const [phone, setPhone] = useState(data.personalInfo.phone || '072 939 6259');
   const [linkedInUrl, setLinkedInUrl] = useState(data.personalInfo.linkedInUrl);
   const [githubUrl, setGithubUrl] = useState(data.personalInfo.githubUrl);
   const [location, setLocation] = useState(data.personalInfo.location);
@@ -69,6 +72,8 @@ export const EditModal: React.FC = () => {
   // New certification form state
   const [newCertName, setNewCertName] = useState('');
   const [newCertInst, setNewCertInst] = useState('');
+  const [newCertInstructor, setNewCertInstructor] = useState('');
+  const [newCertCredentialId, setNewCertCredentialId] = useState('');
   const [newCertDate, setNewCertDate] = useState('');
   const [newCertDesc, setNewCertDesc] = useState('');
   const [newCertLink, setNewCertLink] = useState('');
@@ -94,6 +99,7 @@ export const EditModal: React.FC = () => {
       tagline,
       intro,
       email,
+      phone,
       linkedInUrl,
       githubUrl,
       location,
@@ -121,12 +127,16 @@ export const EditModal: React.FC = () => {
     await addCertification({
       name: newCertName,
       institution: newCertInst,
-      dateCompleted: newCertDate || '2025',
+      instructor: newCertInstructor || undefined,
+      credentialId: newCertCredentialId || undefined,
+      dateCompleted: newCertDate || '2026',
       description: newCertDesc,
       certificateLink: newCertLink,
     });
     setNewCertName('');
     setNewCertInst('');
+    setNewCertInstructor('');
+    setNewCertCredentialId('');
     setNewCertDate('');
     setNewCertDesc('');
     setNewCertLink('');
@@ -357,6 +367,17 @@ export const EditModal: React.FC = () => {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-3.5 py-2 border rounded-xl text-sm focus:border-cyan-500 outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Phone Number</label>
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="072 939 6259"
                     className="w-full px-3.5 py-2 border rounded-xl text-sm focus:border-cyan-500 outline-none"
                   />
                 </div>
@@ -617,10 +638,32 @@ export const EditModal: React.FC = () => {
                   </div>
 
                   <div>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">Instructor / Taught By (Optional)</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Andrew Ng, Stanford University"
+                      value={newCertInstructor}
+                      onChange={(e) => setNewCertInstructor(e.target.value)}
+                      className="w-full px-3 py-2 border rounded-xl text-xs bg-white focus:border-cyan-500 outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-700 mb-1">Credential ID (Optional)</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. GK70N5FBWZAF"
+                      value={newCertCredentialId}
+                      onChange={(e) => setNewCertCredentialId(e.target.value)}
+                      className="w-full px-3 py-2 border rounded-xl text-xs bg-white focus:border-cyan-500 outline-none"
+                    />
+                  </div>
+
+                  <div>
                     <label className="block text-xs font-semibold text-slate-700 mb-1">Certificate Link (Optional)</label>
                     <input
                       type="url"
-                      placeholder="https://credential-link.com"
+                      placeholder="https://coursera.org/verify/..."
                       value={newCertLink}
                       onChange={(e) => setNewCertLink(e.target.value)}
                       className="w-full px-3 py-2 border rounded-xl text-xs bg-white focus:border-cyan-500 outline-none"
@@ -654,18 +697,57 @@ export const EditModal: React.FC = () => {
                   Existing Certifications ({data.certifications.length})
                 </h4>
                 {data.certifications.map((cert) => (
-                  <div key={cert.id} className="p-4 rounded-xl border border-slate-200 flex items-center justify-between">
-                    <div>
-                      <div className="font-semibold text-slate-900 text-sm">{cert.name}</div>
-                      <div className="text-xs text-cyan-700">{cert.institution} • {cert.dateCompleted}</div>
+                  <div key={cert.id} className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex-1">
+                        <div className="font-semibold text-slate-900 text-sm">{cert.name}</div>
+                        <div className="text-xs text-cyan-700 font-medium">{cert.institution} • {cert.dateCompleted}</div>
+                      </div>
+                      <button
+                        onClick={() => deleteCertification(cert.id)}
+                        className="p-1.5 text-rose-600 hover:bg-rose-50 rounded-lg transition-colors shrink-0"
+                        title="Delete certification"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </div>
-                    <button
-                      onClick={() => deleteCertification(cert.id)}
-                      className="p-2 text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
-                      title="Delete"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                      <div>
+                        <label className="block text-[11px] font-semibold text-slate-600 mb-0.5">Certificate Link (Coursera)</label>
+                        <input
+                          type="url"
+                          value={cert.certificateLink || ''}
+                          onChange={(e) => updateCertification(cert.id, { certificateLink: e.target.value })}
+                          placeholder="https://coursera.org/share/..."
+                          className="w-full px-2.5 py-1.5 border rounded-lg bg-white text-xs text-slate-800 focus:border-cyan-500 outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[11px] font-semibold text-slate-600 mb-0.5">Credential ID</label>
+                        <input
+                          type="text"
+                          value={cert.credentialId || ''}
+                          onChange={(e) => updateCertification(cert.id, { credentialId: e.target.value })}
+                          placeholder="e.g. GK70N5FBWZAF"
+                          className="w-full px-2.5 py-1.5 border rounded-lg bg-white text-xs font-mono text-slate-800 focus:border-cyan-500 outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    {cert.certificateLink && (
+                      <div className="pt-1 flex items-center justify-between text-[11px]">
+                        <a
+                          href={cert.certificateLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-cyan-600 hover:text-cyan-800 font-semibold inline-flex items-center gap-1"
+                        >
+                          <span>Open certificate in new tab</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

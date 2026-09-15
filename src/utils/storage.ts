@@ -5,7 +5,7 @@ const DB_NAME = 'ella_portfolio_db';
 const DB_VERSION = 1;
 const STORE_DATA = 'portfolio_data';
 const STORE_FILES = 'portfolio_files';
-const LOCAL_STORAGE_KEY = 'ella_portfolio_state_v1';
+const LOCAL_STORAGE_KEY = 'ella_portfolio_state_v2';
 
 function openDatabase(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
@@ -90,16 +90,76 @@ export async function loadPortfolioData(): Promise<PortfolioData> {
     console.warn('IndexedDB read fallback:', err);
   }
 
+  // Ensure certifications are populated from initialPortfolioData
+  if (!loadedData.certifications || loadedData.certifications.length === 0) {
+    loadedData.certifications = initialPortfolioData.certifications;
+  } else {
+    const defMap = new Map(initialPortfolioData.certifications.map((c) => [c.id, c]));
+    loadedData.certifications = loadedData.certifications.map((c) => {
+      const def = defMap.get(c.id);
+      if (def) {
+        return {
+          ...c,
+          certificateLink: def.certificateLink,
+          shareUrl: def.shareUrl || def.certificateLink,
+          credentialId: def.credentialId || c.credentialId,
+          instructor: def.instructor || c.instructor,
+        };
+      }
+      return c;
+    });
+    const existingCertIds = new Set(loadedData.certifications.map((c) => c.id));
+    for (const defCert of initialPortfolioData.certifications) {
+      if (!existingCertIds.has(defCert.id)) {
+        loadedData.certifications.push(defCert);
+      }
+    }
+  }
+
+  // Ensure education items are populated from initialPortfolioData
+  if (!loadedData.education || loadedData.education.length === 0) {
+    loadedData.education = initialPortfolioData.education;
+  } else {
+    const existingEduIds = new Set(loadedData.education.map((e) => e.id));
+    for (const defEdu of initialPortfolioData.education) {
+      if (!existingEduIds.has(defEdu.id)) {
+        loadedData.education.push(defEdu);
+      }
+    }
+  }
+
+  // Ensure CV file metadata is populated if missing
+  if (!loadedData.cvFile) {
+    loadedData.cvFile = initialPortfolioData.cvFile;
+  }
+
+  // Ensure phone and languages are populated
+  if (initialPortfolioData.personalInfo.phone && !loadedData.personalInfo.phone) {
+    loadedData.personalInfo.phone = initialPortfolioData.personalInfo.phone;
+  }
+  if (!loadedData.personalInfo.languages || loadedData.personalInfo.languages.length === 0) {
+    loadedData.personalInfo.languages = initialPortfolioData.personalInfo.languages;
+  }
+
+  // Ensure valid profile picture fallback if missing or corrupted from legacy slice
+  if (
+    !loadedData.profilePicture ||
+    !loadedData.profilePicture.dataUrl ||
+    (loadedData.profilePicture.dataUrl.startsWith('data:') && loadedData.profilePicture.dataUrl.length < 1000)
+  ) {
+    loadedData.profilePicture = initialPortfolioData.profilePicture;
+  }
+
   return loadedData;
 }
 
 export async function savePortfolioData(data: PortfolioData): Promise<void> {
-  // Sync to localStorage (excluding heavy binary dataUrl if large)
+  // Sync to localStorage
   try {
     const lightweightData = {
       ...data,
-      // Avoid localStorage quota crash if files are big
-      profilePicture: data.profilePicture ? { ...data.profilePicture, dataUrl: data.profilePicture.dataUrl.slice(0, 500) } : null,
+      // Retain profile picture safely
+      profilePicture: data.profilePicture,
       cvFile: data.cvFile ? { ...data.cvFile, dataUrl: '' } : null,
     };
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(lightweightData));

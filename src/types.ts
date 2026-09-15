@@ -3,9 +3,11 @@ export interface PersonalInfo {
   tagline: string;
   intro: string;
   email: string;
+  phone?: string;
   linkedInUrl: string;
   githubUrl: string;
   location: string;
+  languages?: string[];
 }
 
 export interface StoredFile {
@@ -52,9 +54,13 @@ export interface CertificationItem {
   id: string;
   name: string;
   institution: string;
+  instructor?: string;
   dateCompleted: string;
   description: string;
   certificateLink?: string;
+  shareUrl?: string;
+  credentialId?: string;
+  providerBadge?: 'google' | 'stanford' | 'ibm' | 'aws' | 'deeplearning' | 'other';
 }
 
 export interface ExperienceItem {

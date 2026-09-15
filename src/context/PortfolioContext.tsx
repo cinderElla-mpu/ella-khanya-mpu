@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState, ReactNode } from
 import { PortfolioData, PersonalInfo, ProjectItem, EducationItem, CertificationItem, ExperienceItem, AchievementItem, StoredFile, ContactMessage } from '../types.ts';
 import { initialPortfolioData } from '../data/initialData.ts';
 import { loadPortfolioData, savePortfolioData, fileToStoredFile, downloadFile, exportPortfolioJSON, importPortfolioJSON } from '../utils/storage.ts';
+import { downloadCVPdf } from '../utils/generateCVPdf.ts';
 
 interface PortfolioContextType {
   data: PortfolioData;
@@ -271,8 +272,8 @@ export function PortfolioProvider({ children }: { children: ReactNode }) {
       downloadFile(data.cvFile);
       showToast(`Downloading ${data.cvFile.name}...`);
     } else {
-      showToast('Please upload your CV first to download it.');
-      openEditModal('cv');
+      downloadCVPdf(data, 'Ella_Khanya_Mpu_CV.pdf');
+      showToast('Downloading Ella Khanya Mpu CV (PDF)...');
     }
   };
 
