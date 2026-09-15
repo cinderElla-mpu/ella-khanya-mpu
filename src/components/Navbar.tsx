@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Sparkles, SlidersHorizontal, ArrowUpRight, Mail } from 'lucide-react';
+import { Menu, X, Sparkles, ArrowUpRight, Mail } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { usePortfolio } from '../context/PortfolioContext.tsx';
 
@@ -10,7 +10,7 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { data, openEditModal } = usePortfolio();
+  const { data } = usePortfolio();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -132,16 +132,6 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
 
           {/* Action Buttons */}
           <div className="hidden sm:flex items-center gap-3">
-            <button
-              id="nav-edit-mode-btn"
-              onClick={() => openEditModal('general')}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-cyan-800 bg-cyan-50 hover:bg-cyan-100 rounded-xl border border-cyan-200 transition-colors shadow-2xs"
-              title="Edit portfolio info, links, education, and uploads"
-            >
-              <SlidersHorizontal className="w-3.5 h-3.5 text-cyan-600" />
-              <span>Edit Portfolio</span>
-            </button>
-
             <a
               id="nav-view-work-btn"
               href="#projects"
@@ -165,14 +155,6 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
 
           {/* Mobile Menu Button */}
           <div className="flex items-center gap-2 lg:hidden">
-            <button
-              onClick={() => openEditModal('general')}
-              className="p-2 text-cyan-600 hover:bg-cyan-50 rounded-lg border border-cyan-200"
-              title="Edit Portfolio"
-              aria-label="Edit Portfolio"
-            >
-              <SlidersHorizontal className="w-5 h-5" />
-            </button>
             <button
               id="mobile-menu-toggle-btn"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

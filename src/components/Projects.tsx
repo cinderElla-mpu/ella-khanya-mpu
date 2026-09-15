@@ -4,14 +4,12 @@ import {
   Github,
   Sparkles,
   Layers,
-  Edit3,
   Bot,
   Plane,
   Building2,
   FileText,
   CheckCircle2,
   AlertCircle,
-  Plus,
   Train,
 } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -19,7 +17,7 @@ import { usePortfolio } from '../context/PortfolioContext.tsx';
 import { ProjectItem } from '../types.ts';
 
 export const Projects: React.FC = () => {
-  const { data, openEditModal } = usePortfolio();
+  const { data } = usePortfolio();
 
   const getProjectIcon = (id: string) => {
     switch (id) {
@@ -93,14 +91,6 @@ export const Projects: React.FC = () => {
               frontend architecture, transit intelligence, sentiment analysis, conversational flows, and AI APIs into practical user solutions.
             </p>
           </div>
-
-          <button
-            onClick={() => openEditModal('projects')}
-            className="self-start md:self-auto inline-flex items-center gap-2 px-4 py-2 text-xs font-bold text-cyan-800 bg-cyan-50 hover:bg-cyan-100 rounded-xl border border-cyan-200 transition-colors shadow-2xs"
-          >
-            <Edit3 className="w-3.5 h-3.5" />
-            <span>Manage Project Links</span>
-          </button>
         </div>
 
         {/* 5 Projects Grid */}
@@ -200,7 +190,7 @@ export const Projects: React.FC = () => {
                 <div className="px-6 py-4 sm:px-8 bg-cyan-50/40 border-t border-cyan-100/80 flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-2">
                     {/* View Code / GitHub */}
-                    {project.githubUrl ? (
+                    {project.githubUrl && (
                       <a
                         href={project.githubUrl}
                         target="_blank"
@@ -211,15 +201,6 @@ export const Projects: React.FC = () => {
                         <Github className="w-4 h-4 text-cyan-500" />
                         <span>View Code</span>
                       </a>
-                    ) : (
-                      <button
-                        onClick={() => openEditModal('projects')}
-                        className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-slate-600 hover:text-cyan-700 bg-white border border-dashed border-cyan-300 rounded-xl transition-colors"
-                        title="Add GitHub repository link"
-                      >
-                        <Plus className="w-3.5 h-3.5 text-cyan-600" />
-                        <span>Add Code Link</span>
-                      </button>
                     )}
 
                     {/* View Live / Demo */}
@@ -243,25 +224,8 @@ export const Projects: React.FC = () => {
                         <span>Open Demo</span>
                         <ExternalLink className="w-3.5 h-3.5" />
                       </a>
-                    ) : (
-                      <button
-                        onClick={() => openEditModal('projects')}
-                        className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-cyan-800 hover:text-cyan-900 bg-cyan-50 hover:bg-cyan-100 border border-cyan-200 rounded-xl transition-colors"
-                        title="Configure live deployment URL"
-                      >
-                        <Plus className="w-3.5 h-3.5" />
-                        <span>Set Live URL</span>
-                      </button>
-                    )}
+                    ) : null}
                   </div>
-
-                  <button
-                    onClick={() => openEditModal('projects')}
-                    className="p-1.5 text-slate-500 hover:text-cyan-600 transition-colors"
-                    title="Edit project details"
-                  >
-                    <Edit3 className="w-4 h-4" />
-                  </button>
                 </div>
               </motion.div>
             );

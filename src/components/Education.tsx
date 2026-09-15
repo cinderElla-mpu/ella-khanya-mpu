@@ -1,9 +1,9 @@
 import React from 'react';
-import { GraduationCap, Calendar, School, BookOpen, Sparkles, Edit3, Plus } from 'lucide-react';
+import { GraduationCap, Calendar, School, BookOpen, Sparkles } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext.tsx';
 
 export const Education: React.FC = () => {
-  const { data, openEditModal } = usePortfolio();
+  const { data } = usePortfolio();
 
   return (
     <section id="education" className="py-16 md:py-24 bg-white border-b border-cyan-100">
@@ -25,14 +25,6 @@ export const Education: React.FC = () => {
               Formal qualifications, foundational coursework, and independent technical studies supporting my journey.
             </p>
           </div>
-
-          <button
-            onClick={() => openEditModal('education')}
-            className="self-start md:self-auto inline-flex items-center gap-2 px-4 py-2 text-xs font-bold text-cyan-800 bg-cyan-50 hover:bg-cyan-100 rounded-xl border border-cyan-200 transition-colors shadow-2xs"
-          >
-            <Edit3 className="w-3.5 h-3.5" />
-            <span>Edit Education Details</span>
-          </button>
         </div>
 
         {/* Education Timeline / Cards */}
@@ -64,25 +56,11 @@ export const Education: React.FC = () => {
                     <span className="font-medium">
                       School:{' '}
                       <span className="text-slate-900 font-bold">
-                        {item.school || '[Add School Name]'}
+                        {item.school || 'High School'}
                       </span>
                     </span>
-                    <button
-                      onClick={() => openEditModal('education')}
-                      className="text-xs text-cyan-600 hover:text-cyan-700 hover:underline ml-1 font-semibold"
-                    >
-                      (edit)
-                    </button>
                   </div>
                 </div>
-
-                <button
-                  onClick={() => openEditModal('education')}
-                  className="p-2 text-slate-500 hover:text-cyan-600 rounded-xl hover:bg-cyan-50 border border-transparent hover:border-cyan-200 transition-colors self-start"
-                  title="Edit details"
-                >
-                  <Edit3 className="w-4 h-4" />
-                </button>
               </div>
 
               {/* Sub-sections: Subjects & Coursework */}
@@ -107,15 +85,7 @@ export const Education: React.FC = () => {
                       ))}
                     </div>
                   ) : (
-                    <div className="text-xs text-slate-600 italic">
-                      No subjects added yet.{' '}
-                      <button
-                        onClick={() => openEditModal('education')}
-                        className="text-cyan-600 hover:underline not-italic font-bold"
-                      >
-                        + Add Subjects
-                      </button>
-                    </div>
+                    <div className="text-xs text-slate-500 italic">Core Academic Subjects</div>
                   )}
                 </div>
 
@@ -139,15 +109,7 @@ export const Education: React.FC = () => {
                       ))}
                     </div>
                   ) : (
-                    <div className="text-xs text-slate-600 italic">
-                      No courses added yet.{' '}
-                      <button
-                        onClick={() => openEditModal('education')}
-                        className="text-teal-600 hover:underline not-italic font-bold"
-                      >
-                        + Add Courses
-                      </button>
-                    </div>
+                    <div className="text-xs text-slate-500 italic">Self-directed Learning</div>
                   )}
                 </div>
 
@@ -171,15 +133,7 @@ export const Education: React.FC = () => {
                       ))}
                     </div>
                   ) : (
-                    <div className="text-xs text-slate-600 italic">
-                      No tech courses listed.{' '}
-                      <button
-                        onClick={() => openEditModal('education')}
-                        className="text-sky-600 hover:underline not-italic font-bold"
-                      >
-                        + Add
-                      </button>
-                    </div>
+                    <div className="text-xs text-slate-500 italic">Software Fundamentals</div>
                   )}
                 </div>
 
@@ -203,15 +157,7 @@ export const Education: React.FC = () => {
                       ))}
                     </div>
                   ) : (
-                    <div className="text-xs text-slate-600 italic">
-                      No AI courses listed.{' '}
-                      <button
-                        onClick={() => openEditModal('education')}
-                        className="text-indigo-600 hover:underline not-italic font-bold"
-                      >
-                        + Add
-                      </button>
-                    </div>
+                    <div className="text-xs text-slate-500 italic">Machine Learning & LLMs</div>
                   )}
                 </div>
               </div>

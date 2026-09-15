@@ -1,9 +1,9 @@
 import React from 'react';
-import { Briefcase, Calendar, Building, Sparkles, CheckCircle2, Edit3, Plus, Layers } from 'lucide-react';
+import { Briefcase, Calendar, Building, Sparkles, CheckCircle2, Layers } from 'lucide-react';
 import { usePortfolio } from '../context/PortfolioContext.tsx';
 
 export const Experience: React.FC = () => {
-  const { data, openEditModal } = usePortfolio();
+  const { data } = usePortfolio();
 
   return (
     <section id="experience" className="py-16 md:py-24 bg-white border-b border-slate-100">
@@ -22,14 +22,6 @@ export const Experience: React.FC = () => {
               Focusing on structured technical acceleration programmes, collaborative builds, and practical application development.
             </p>
           </div>
-
-          <button
-            onClick={() => openEditModal('experience')}
-            className="self-start md:self-auto inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold text-cyan-700 bg-cyan-50 hover:bg-cyan-100 rounded-xl border border-cyan-200 transition-colors"
-          >
-            <Edit3 className="w-3.5 h-3.5" />
-            <span>Manage Experience Entries</span>
-          </button>
         </div>
 
         {/* Experience Cards */}
@@ -60,14 +52,6 @@ export const Experience: React.FC = () => {
                     <span>Organisation: <strong className="text-slate-900 font-semibold">{item.organisation}</strong></span>
                   </div>
                 </div>
-
-                <button
-                  onClick={() => openEditModal('experience')}
-                  className="p-2 text-slate-600 hover:text-cyan-600 rounded-lg hover:bg-cyan-50 transition-colors self-start"
-                  title="Edit entry"
-                >
-                  <Edit3 className="w-4 h-4" />
-                </button>
               </div>
 
               {/* Breakdown Grid */}
@@ -107,39 +91,6 @@ export const Experience: React.FC = () => {
               </div>
             </div>
           ))}
-
-          {/* Additional Experience Categories Prompt */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div
-              onClick={() => openEditModal('experience')}
-              className="p-5 rounded-2xl border-2 border-dashed border-slate-200 hover:border-cyan-300 bg-slate-50/40 hover:bg-cyan-50/30 transition-all cursor-pointer text-center group"
-            >
-              <h4 className="font-display font-semibold text-slate-800 text-sm group-hover:text-cyan-800 mb-1">
-                + Group Technology Projects
-              </h4>
-              <p className="text-xs text-slate-600">Collaborative hackathons, group code sprints, and team builds.</p>
-            </div>
-
-            <div
-              onClick={() => openEditModal('experience')}
-              className="p-5 rounded-2xl border-2 border-dashed border-slate-200 hover:border-cyan-300 bg-slate-50/40 hover:bg-cyan-50/30 transition-all cursor-pointer text-center group"
-            >
-              <h4 className="font-display font-semibold text-slate-800 text-sm group-hover:text-cyan-800 mb-1">
-                + Web Development Projects
-              </h4>
-              <p className="text-xs text-slate-600">Frontend user interfaces, API experiments, and prototypes.</p>
-            </div>
-
-            <div
-              onClick={() => openEditModal('experience')}
-              className="p-5 rounded-2xl border-2 border-dashed border-slate-200 hover:border-cyan-300 bg-slate-50/40 hover:bg-cyan-50/30 transition-all cursor-pointer text-center group"
-            >
-              <h4 className="font-display font-semibold text-slate-800 text-sm group-hover:text-cyan-800 mb-1">
-                + Personal Projects & Work
-              </h4>
-              <p className="text-xs text-slate-600">Self-directed experimentation and other practical initiatives.</p>
-            </div>
-          </div>
         </div>
       </div>
     </section>

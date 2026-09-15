@@ -8,7 +8,6 @@ import {
   AlertCircle,
   Clock,
   ExternalLink,
-  Edit3,
   MapPin,
   MessageSquare,
   Phone,
@@ -16,7 +15,7 @@ import {
 import { usePortfolio } from '../context/PortfolioContext.tsx';
 
 export const Contact: React.FC = () => {
-  const { data, submitContactMessage, openEditModal } = usePortfolio();
+  const { data, submitContactMessage } = usePortfolio();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -121,7 +120,7 @@ export const Contact: React.FC = () => {
               </a>
 
               {/* LinkedIn */}
-              {data.personalInfo.linkedInUrl ? (
+              {data.personalInfo.linkedInUrl && (
                 <a
                   href={data.personalInfo.linkedInUrl}
                   target="_blank"
@@ -141,24 +140,6 @@ export const Contact: React.FC = () => {
                   </div>
                   <ExternalLink className="w-4 h-4 text-cyan-600 group-hover:translate-x-0.5 transition-transform" />
                 </a>
-              ) : (
-                <div
-                  onClick={() => openEditModal('general')}
-                  className="flex items-center gap-4 p-4 rounded-2xl bg-white border-2 border-dashed border-cyan-300 hover:border-cyan-500 hover:bg-cyan-50/40 transition-all cursor-pointer group"
-                >
-                  <div className="w-12 h-12 rounded-2xl bg-cyan-100 text-cyan-700 flex items-center justify-center shrink-0">
-                    <Linkedin className="w-6 h-6" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <span className="text-[11px] font-bold text-cyan-700 uppercase tracking-wider">
-                      LinkedIn
-                    </span>
-                    <div className="text-sm font-semibold text-slate-700 group-hover:text-cyan-800">
-                      + Click to add your profile link
-                    </div>
-                  </div>
-                  <Edit3 className="w-4 h-4 text-cyan-600" />
-                </div>
               )}
 
               {/* Email */}
@@ -179,13 +160,6 @@ export const Contact: React.FC = () => {
                     </a>
                   </div>
                 </div>
-                <button
-                  onClick={() => openEditModal('general')}
-                  className="p-1 text-slate-400 hover:text-cyan-600"
-                  title="Edit email address"
-                >
-                  <Edit3 className="w-4 h-4" />
-                </button>
               </div>
 
               {/* Phone */}
@@ -207,13 +181,6 @@ export const Contact: React.FC = () => {
                       </a>
                     </div>
                   </div>
-                  <button
-                    onClick={() => openEditModal('general')}
-                    className="p-1 text-slate-400 hover:text-cyan-600"
-                    title="Edit phone number"
-                  >
-                    <Edit3 className="w-4 h-4" />
-                  </button>
                 </div>
               )}
 

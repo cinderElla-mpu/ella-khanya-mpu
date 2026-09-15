@@ -80,21 +80,10 @@ export async function loadPortfolioData(): Promise<PortfolioData> {
         }
       }
     }
-    if (profileReq.result) {
-      if (
-        profileReq.result.dataUrl?.includes('profile.jpg') ||
-        profileReq.result.dataUrl?.includes('profile.png') ||
-        profileReq.result.dataUrl?.includes('avatar.png')
-      ) {
-        loadedData.profilePicture = null;
-        try {
-          filesStore.delete('profilePicture');
-        } catch {
-          // ignore
-        }
-      } else {
-        loadedData.profilePicture = profileReq.result;
-      }
+    if (profileReq.result && profileReq.result.dataUrl) {
+      loadedData.profilePicture = profileReq.result;
+    } else {
+      loadedData.profilePicture = loadedData.profilePicture || initialPortfolioData.profilePicture;
     }
     if (cvReq.result) {
       loadedData.cvFile = cvReq.result;

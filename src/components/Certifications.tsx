@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Award, Calendar, ExternalLink, Plus, Edit3, Trash2, BookCheck, ShieldCheck, Copy, Check, UserCheck, Sparkles } from 'lucide-react';
+import { Award, Calendar, ExternalLink, BookCheck, ShieldCheck, Copy, Check, UserCheck, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { usePortfolio } from '../context/PortfolioContext.tsx';
 import { CertificationItem } from '../types.ts';
 
 export const Certifications: React.FC = () => {
-  const { data, openEditModal, deleteCertification, showToast } = usePortfolio();
+  const { data, showToast } = usePortfolio();
   const [selectedFilter, setSelectedFilter] = useState<string>('all');
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
@@ -121,13 +121,6 @@ export const Certifications: React.FC = () => {
               <ShieldCheck className="w-4 h-4 text-cyan-600" />
               <span>{certs.length} Verified Certificates</span>
             </div>
-            <button
-              onClick={() => openEditModal('certifications')}
-              className="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold text-cyan-800 bg-cyan-50 hover:bg-cyan-100 rounded-xl border border-cyan-200 transition-colors shadow-2xs"
-            >
-              <Plus className="w-3.5 h-3.5" />
-              <span>Add Credential</span>
-            </button>
           </div>
         </div>
 
@@ -214,23 +207,6 @@ export const Certifications: React.FC = () => {
                           <ShieldCheck className="w-3 h-3 text-emerald-600" />
                           <span>Coursera Verified</span>
                         </span>
-                      </div>
-
-                      <div className="flex items-center gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
-                        <button
-                          onClick={() => openEditModal('certifications')}
-                          className="p-1.5 text-slate-400 hover:text-cyan-600 rounded-lg hover:bg-cyan-50 transition-colors"
-                          title="Edit certification"
-                        >
-                          <Edit3 className="w-3.5 h-3.5" />
-                        </button>
-                        <button
-                          onClick={() => deleteCertification(cert.id)}
-                          className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors"
-                          title="Delete certification"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
                       </div>
                     </div>
 

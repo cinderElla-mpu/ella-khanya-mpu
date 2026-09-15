@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import {
   ArrowDown,
   Download,
@@ -12,36 +12,12 @@ import {
   GraduationCap,
   ShieldCheck,
   ArrowRight,
-  Camera,
-  Trash2,
-  RefreshCw,
-  Plus,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { usePortfolio } from '../context/PortfolioContext.tsx';
 
 export const Hero: React.FC = () => {
-  const {
-    data,
-    uploadProfilePicture,
-    removeProfilePicture,
-    downloadCurrentCV,
-    openEditModal,
-    showToast,
-  } = usePortfolio();
-
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (!file.type.startsWith('image/')) {
-        showToast('Please select a valid image file (PNG, JPG, or WEBP).');
-        return;
-      }
-      await uploadProfilePicture(file);
-    }
-  };
+  const { data, downloadCurrentCV } = usePortfolio();
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
@@ -60,16 +36,6 @@ export const Hero: React.FC = () => {
       id="home"
       className="relative pt-10 pb-16 md:pt-16 md:pb-24 overflow-hidden border-b border-cyan-100/80 bg-gradient-to-b from-white via-cyan-50/30 to-white"
     >
-      {/* Hidden native image file input for adding user's photo */}
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handleFileChange}
-        accept="image/*"
-        className="hidden"
-        id="hero-picture-file-input"
-        aria-label="Upload personal profile photo"
-      />
 
       {/* Vibrant background ambient glow with cyan, teal, and sky mesh & gentle motion */}
       <motion.div
@@ -218,19 +184,6 @@ export const Hero: React.FC = () => {
                 <span>{data.cvFile ? 'Download CV' : 'Download CV'}</span>
               </motion.button>
 
-              {/* Add Picture Option directly on Hero */}
-              <motion.button
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                id="hero-add-my-picture-btn"
-                onClick={() => fileInputRef.current?.click()}
-                className="inline-flex items-center gap-2 px-4 py-3.5 bg-cyan-50 hover:bg-cyan-100/80 text-cyan-800 font-semibold text-sm rounded-xl border border-cyan-300 shadow-xs transition-all"
-                title="Add or update your profile picture"
-              >
-                <Camera className="w-4 h-4 text-cyan-600" />
-                <span>{data.profilePicture?.dataUrl ? 'Change Picture' : '+ Add Picture'}</span>
-              </motion.button>
-
               {/* GitHub */}
               <motion.a
                 whileHover={{ scale: 1.03 }}
@@ -246,8 +199,8 @@ export const Hero: React.FC = () => {
                 <span>GitHub</span>
               </motion.a>
 
-              {/* LinkedIn (Editable) */}
-              {data.personalInfo.linkedInUrl ? (
+              {/* LinkedIn (only when populated) */}
+              {data.personalInfo.linkedInUrl && (
                 <motion.a
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
@@ -261,23 +214,11 @@ export const Hero: React.FC = () => {
                   <Linkedin className="w-4 h-4 text-cyan-600" />
                   <span>LinkedIn</span>
                 </motion.a>
-              ) : (
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  id="hero-add-linkedin-btn"
-                  onClick={() => openEditModal('general')}
-                  className="inline-flex items-center gap-1.5 px-4 py-3.5 bg-white hover:bg-cyan-50 text-slate-600 hover:text-cyan-700 text-xs sm:text-sm font-medium rounded-xl border border-dashed border-cyan-300 transition-all"
-                  title="Click to add your LinkedIn profile link"
-                >
-                  <Linkedin className="w-4 h-4 text-cyan-500" />
-                  <span>+ Add LinkedIn</span>
-                </motion.button>
               )}
             </motion.div>
           </motion.div>
 
-          {/* Right Column: Professional Spotlight Card with animated photo option */}
+          {/* Right Column: Professional Spotlight Card */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -291,46 +232,19 @@ export const Hero: React.FC = () => {
               {/* Header with Photo/Monogram & Identity */}
               <div className="flex items-start gap-4 pb-5 border-b border-slate-100">
                 <div className="relative shrink-0">
-                  <AnimatePresence mode="wait">
-                    {data.profilePicture?.dataUrl ? (
-                      <motion.div
-                        key="user-photo"
-                        initial={{ opacity: 0, scale: 0.85 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.85 }}
-                        transition={{ duration: 0.4 }}
-                        onClick={() => fileInputRef.current?.click()}
-                        className="relative w-18 h-18 sm:w-20 sm:h-20 rounded-2xl overflow-hidden ring-4 ring-cyan-200 shadow-md cursor-pointer group/photo"
-                        title="Click to change profile picture"
-                      >
-                        <img
-                          src={data.profilePicture.dataUrl}
-                          alt={data.personalInfo.name}
-                          className="w-full h-full object-cover object-center group-hover/photo:scale-105 transition-transform duration-300"
-                        />
-                        <div className="absolute inset-0 bg-slate-900/50 opacity-0 group-hover/photo:opacity-100 transition-opacity flex items-center justify-center text-white">
-                          <Camera className="w-5 h-5 text-cyan-200" />
-                        </div>
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="monogram"
-                        initial={{ opacity: 0, scale: 0.85 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.85 }}
-                        transition={{ duration: 0.4 }}
-                        onClick={() => fileInputRef.current?.click()}
-                        className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-gradient-to-tr from-cyan-500 via-teal-500 to-cyan-600 flex flex-col items-center justify-center text-white font-extrabold text-2xl shadow-md ring-4 ring-cyan-100 cursor-pointer group/mono relative"
-                        title="Click to add your picture"
-                      >
-                        <span>EK</span>
-                        <div className="absolute inset-0 rounded-2xl bg-slate-900/60 opacity-0 group-hover/mono:opacity-100 transition-opacity flex flex-col items-center justify-center text-[10px] font-sans font-semibold">
-                          <Plus className="w-4 h-4 text-cyan-300" />
-                          <span>Add Photo</span>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                  {data.profilePicture?.dataUrl ? (
+                    <div className="relative w-18 h-18 sm:w-20 sm:h-20 rounded-2xl overflow-hidden ring-4 ring-cyan-200 shadow-md">
+                      <img
+                        src={data.profilePicture.dataUrl}
+                        alt={data.personalInfo.name}
+                        className="w-full h-full object-cover object-center"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-gradient-to-tr from-cyan-500 via-teal-500 to-cyan-600 flex items-center justify-center text-white font-extrabold text-2xl shadow-md ring-4 ring-cyan-100">
+                      <span>EK</span>
+                    </div>
+                  )}
 
                   <span
                     className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-400 ring-2 ring-white"
@@ -348,37 +262,15 @@ export const Hero: React.FC = () => {
                     AI & Full-Stack Developer
                   </p>
 
-                  {/* Photo Actions or Add Prompt */}
-                  <div className="mt-2 flex items-center gap-2 flex-wrap">
-                    {data.profilePicture?.dataUrl ? (
-                      <div className="flex items-center gap-1.5">
-                        <button
-                          type="button"
-                          onClick={() => fileInputRef.current?.click()}
-                          className="inline-flex items-center gap-1 text-[11px] font-semibold text-cyan-700 hover:text-cyan-900 bg-cyan-50 px-2 py-0.5 rounded-md border border-cyan-200 transition-colors"
-                        >
-                          <RefreshCw className="w-3 h-3 text-cyan-600" />
-                          <span>Change Photo</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={removeProfilePicture}
-                          className="inline-flex items-center gap-0.5 text-[11px] font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded-md border border-rose-200 transition-colors"
-                          title="Remove uploaded picture"
-                        >
-                          <Trash2 className="w-3 h-3" />
-                        </button>
-                      </div>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => fileInputRef.current?.click()}
-                        className="inline-flex items-center gap-1 text-[11px] font-semibold text-cyan-700 hover:text-cyan-900 bg-cyan-50 hover:bg-cyan-100/70 px-2.5 py-1 rounded-full border border-cyan-200 transition-colors shadow-2xs"
-                      >
-                        <Camera className="w-3 h-3 text-cyan-600" />
-                        <span>+ Add My Picture</span>
-                      </button>
-                    )}
+                  {/* Professional Status Badges */}
+                  <div className="mt-2.5 flex items-center gap-2 flex-wrap">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-semibold">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      <span>Open to Opportunities</span>
+                    </span>
+                    <span className="inline-flex items-center px-2 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 text-[11px] font-semibold">
+                      CAPACITI 2026
+                    </span>
                   </div>
                 </div>
               </div>

@@ -1,8 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import {
   FileText,
   Download,
-  UploadCloud,
   Printer,
   CheckCircle2,
   RefreshCw,
@@ -19,30 +18,8 @@ import {
 import { usePortfolio } from '../context/PortfolioContext.tsx';
 
 export const CVSection: React.FC = () => {
-  const { data, uploadCV, downloadCurrentCV, showToast } = usePortfolio();
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { data, downloadCurrentCV } = usePortfolio();
   const [isExpanded, setIsExpanded] = useState<boolean>(true);
-
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const allowed = [
-        'application/pdf',
-        'application/msword',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      ];
-      if (
-        !allowed.includes(file.type) &&
-        !file.name.endsWith('.pdf') &&
-        !file.name.endsWith('.docx') &&
-        !file.name.endsWith('.doc')
-      ) {
-        showToast('Please upload a PDF or Word document (.pdf, .docx).');
-        return;
-      }
-      await uploadCV(file);
-    }
-  };
 
   const handlePrintCV = () => {
     window.print();
@@ -91,24 +68,6 @@ export const CVSection: React.FC = () => {
               <Printer className="w-4 h-4 text-cyan-600" />
               <span>Print / Save PDF</span>
             </button>
-
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              className="inline-flex items-center gap-2 px-4 py-3 bg-cyan-50 hover:bg-cyan-100 text-cyan-900 font-bold text-xs rounded-xl border border-cyan-200 transition-colors cursor-pointer"
-              title="Upload your own customized CV file"
-            >
-              <UploadCloud className="w-4 h-4 text-cyan-600" />
-              <span>Upload / Replace File</span>
-            </button>
-
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-              className="hidden"
-              id="cv-file-upload-input"
-            />
           </div>
 
           <div className="mt-3 flex items-center justify-center gap-2 text-xs text-slate-500">
