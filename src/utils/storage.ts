@@ -81,7 +81,20 @@ export async function loadPortfolioData(): Promise<PortfolioData> {
       }
     }
     if (profileReq.result) {
-      loadedData.profilePicture = profileReq.result;
+      if (
+        profileReq.result.dataUrl?.includes('profile.jpg') ||
+        profileReq.result.dataUrl?.includes('profile.png') ||
+        profileReq.result.dataUrl?.includes('avatar.png')
+      ) {
+        loadedData.profilePicture = null;
+        try {
+          filesStore.delete('profilePicture');
+        } catch {
+          // ignore
+        }
+      } else {
+        loadedData.profilePicture = profileReq.result;
+      }
     }
     if (cvReq.result) {
       loadedData.cvFile = cvReq.result;
@@ -141,13 +154,14 @@ export async function loadPortfolioData(): Promise<PortfolioData> {
     loadedData.personalInfo.languages = initialPortfolioData.personalInfo.languages;
   }
 
-  // Ensure valid profile picture fallback if missing or corrupted from legacy slice
+  // Sanitize profile picture: remove any legacy AI-generated images
   if (
-    !loadedData.profilePicture ||
-    !loadedData.profilePicture.dataUrl ||
-    (loadedData.profilePicture.dataUrl.startsWith('data:') && loadedData.profilePicture.dataUrl.length < 1000)
+    loadedData.profilePicture &&
+    (loadedData.profilePicture.dataUrl?.includes('profile.jpg') ||
+      loadedData.profilePicture.dataUrl?.includes('profile.png') ||
+      loadedData.profilePicture.dataUrl?.includes('avatar.png'))
   ) {
-    loadedData.profilePicture = initialPortfolioData.profilePicture;
+    loadedData.profilePicture = null;
   }
 
   return loadedData;

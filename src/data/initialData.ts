@@ -13,13 +13,7 @@ export const initialPortfolioData: PortfolioData = {
     location: 'South Africa',
     languages: ['isiXhosa', 'English'],
   },
-  profilePicture: {
-    name: 'ella-khanya-mpu.jpg',
-    type: 'image/jpeg',
-    size: 642000,
-    dataUrl: '/profile.jpg',
-    uploadedAt: '2026-09-15T00:00:00.000Z',
-  },
+  profilePicture: null,
   cvFile: {
     name: 'Ella_Khanya_Mpu_CV.pdf',
     type: 'application/pdf',

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Sparkles, SlidersHorizontal, ArrowUpRight, Mail } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { usePortfolio } from '../context/PortfolioContext.tsx';
 
 interface NavbarProps {
@@ -66,18 +67,33 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
             className="flex items-center gap-3 group"
           >
             <div className="relative">
-              {data.profilePicture?.dataUrl ? (
-                <img
-                  src={data.profilePicture.dataUrl}
-                  alt={data.personalInfo.name}
-                  className="w-11 h-11 rounded-2xl object-cover ring-2 ring-cyan-400 shadow-md group-hover:scale-105 transition-transform"
-                  referrerPolicy="no-referrer"
-                />
-              ) : (
-                <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-cyan-500 to-teal-400 flex items-center justify-center text-white font-bold text-lg shadow-md group-hover:from-cyan-600 group-hover:to-teal-500 transition-all">
-                  EK
-                </div>
-              )}
+              <AnimatePresence mode="wait">
+                {data.profilePicture?.dataUrl ? (
+                  <motion.div
+                    key="nav-photo"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    className="w-11 h-11 rounded-2xl overflow-hidden shadow-md group-hover:scale-105 transition-transform ring-2 ring-cyan-300"
+                  >
+                    <img
+                      src={data.profilePicture.dataUrl}
+                      alt={data.personalInfo.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="nav-mono"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-cyan-500 via-teal-500 to-cyan-600 flex items-center justify-center text-white font-bold text-lg shadow-md group-hover:scale-105 transition-transform ring-2 ring-cyan-200"
+                  >
+                    EK
+                  </motion.div>
+                )}
+              </AnimatePresence>
               {/* Online pulse indicator */}
               <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-400 ring-2 ring-white" title="Active Explorer & Builder" />
             </div>

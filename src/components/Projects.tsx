@@ -14,6 +14,7 @@ import {
   Plus,
   Train,
 } from 'lucide-react';
+import { motion } from 'motion/react';
 import { usePortfolio } from '../context/PortfolioContext.tsx';
 import { ProjectItem } from '../types.ts';
 
@@ -110,9 +111,13 @@ export const Projects: React.FC = () => {
             const iconBg = getIconBg(project.id);
 
             return (
-              <div
+              <motion.div
                 id={project.id}
                 key={project.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group relative bg-white rounded-3xl border border-cyan-100 hover:border-cyan-400 hover:shadow-2xl hover:shadow-cyan-500/10 hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between overflow-hidden"
               >
                 {/* Visual Header / Banner */}
@@ -258,7 +263,7 @@ export const Projects: React.FC = () => {
                     <Edit3 className="w-4 h-4" />
                   </button>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>

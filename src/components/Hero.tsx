@@ -4,14 +4,20 @@ import {
   Download,
   Github,
   Linkedin,
-  Camera,
-  UploadCloud,
-  Trash2,
-  RefreshCw,
   Sparkles,
   CheckCircle2,
-  ExternalLink,
+  Code2,
+  Award,
+  MapPin,
+  GraduationCap,
+  ShieldCheck,
+  ArrowRight,
+  Camera,
+  Trash2,
+  RefreshCw,
+  Plus,
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { usePortfolio } from '../context/PortfolioContext.tsx';
 
 export const Hero: React.FC = () => {
@@ -30,7 +36,7 @@ export const Hero: React.FC = () => {
     const file = e.target.files?.[0];
     if (file) {
       if (!file.type.startsWith('image/')) {
-        showToast('Please select a valid image file (PNG, JPG, WEBP).');
+        showToast('Please select a valid image file (PNG, JPG, or WEBP).');
         return;
       }
       await uploadProfilePicture(file);
@@ -54,50 +60,118 @@ export const Hero: React.FC = () => {
       id="home"
       className="relative pt-10 pb-16 md:pt-16 md:pb-24 overflow-hidden border-b border-cyan-100/80 bg-gradient-to-b from-white via-cyan-50/30 to-white"
     >
-      {/* Vibrant background ambient glow with cyan, teal, and sky mesh */}
-      <div
+      {/* Hidden native image file input for adding user's photo */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        accept="image/*"
+        className="hidden"
+        id="hero-picture-file-input"
+        aria-label="Upload personal profile photo"
+      />
+
+      {/* Vibrant background ambient glow with cyan, teal, and sky mesh & gentle motion */}
+      <motion.div
+        animate={{
+          y: [0, -12, 0],
+          scale: [1, 1.04, 1],
+        }}
+        transition={{
+          duration: 9,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
         className="absolute -top-24 left-1/2 -translate-x-1/2 w-[800px] h-[450px] bg-gradient-to-tr from-cyan-200/40 via-teal-100/30 to-sky-200/40 rounded-full blur-3xl pointer-events-none -z-10"
         aria-hidden="true"
       />
-      <div
-        className="absolute top-1/3 -left-32 w-80 h-80 rounded-full bg-cyan-300/25 blur-3xl pointer-events-none -z-10"
+      <motion.div
+        animate={{
+          x: [0, 15, 0],
+          y: [0, 10, 0],
+        }}
+        transition={{
+          duration: 11,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
+        className="absolute top-1/3 -left-32 w-80 h-80 rounded-full bg-cyan-300/20 blur-3xl pointer-events-none -z-10"
         aria-hidden="true"
       />
-      <div
-        className="absolute top-1/4 -right-32 w-96 h-96 rounded-full bg-teal-200/25 blur-3xl pointer-events-none -z-10"
+      <motion.div
+        animate={{
+          x: [0, -15, 0],
+          y: [0, -10, 0],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          ease: 'easeInOut',
+        }}
+        className="absolute top-1/4 -right-32 w-96 h-96 rounded-full bg-teal-200/20 blur-3xl pointer-events-none -z-10"
         aria-hidden="true"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          {/* Left Column: Authentic Introduction */}
-          <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-50 border border-cyan-300/80 text-cyan-900 text-xs sm:text-sm font-semibold shadow-xs">
+          {/* Left Column: Authentic Introduction with animations */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+            className="lg:col-span-7 space-y-6 text-center lg:text-left"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-50 border border-cyan-300/80 text-cyan-900 text-xs sm:text-sm font-semibold shadow-xs"
+            >
               <Sparkles className="w-4 h-4 text-cyan-600 animate-spin-slow" />
               <span className="font-bold">Portfolio</span>
               <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-ping" />
               <span className="text-cyan-700 font-medium">Active Explorer & Application Creator</span>
-            </div>
+            </motion.div>
 
             <div className="space-y-3">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-extrabold text-slate-900 tracking-tight leading-[1.12]">
+              <motion.h1
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.15 }}
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-extrabold text-slate-900 tracking-tight leading-[1.12]"
+              >
                 Hi, I'm{' '}
                 <span className="bg-gradient-to-r from-cyan-600 via-teal-500 to-sky-500 bg-clip-text text-transparent">
                   {data.personalInfo.name}
                 </span>
                 .
-              </h1>
-              <p className="text-base sm:text-lg md:text-xl font-bold bg-gradient-to-r from-cyan-800 to-slate-800 bg-clip-text text-transparent font-display">
+              </motion.h1>
+              <motion.p
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.25 }}
+                className="text-base sm:text-lg md:text-xl font-bold bg-gradient-to-r from-cyan-800 to-slate-800 bg-clip-text text-transparent font-display"
+              >
                 {data.personalInfo.tagline}
-              </p>
+              </motion.p>
             </div>
 
-            <p className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0 font-normal">
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0 font-normal"
+            >
               {data.personalInfo.intro}
-            </p>
+            </motion.p>
 
             {/* Quick highlight points with vibrant colored badges */}
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-1 text-xs sm:text-sm">
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.35 }}
+              className="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-1 text-xs sm:text-sm"
+            >
               <div className="flex items-center gap-2 bg-gradient-to-r from-cyan-50 to-teal-50/60 px-3.5 py-2 rounded-xl border border-cyan-200 shadow-2xs font-semibold text-cyan-900">
                 <CheckCircle2 className="w-4 h-4 text-cyan-600 shrink-0" />
                 <span>{data.projects.length} Published Applications</span>
@@ -110,47 +184,73 @@ export const Hero: React.FC = () => {
                 <CheckCircle2 className="w-4 h-4 text-sky-600 shrink-0" />
                 <span>Matric 2025 Graduate</span>
               </div>
-            </div>
+            </motion.div>
 
             {/* Action Buttons */}
-            <div className="pt-3 flex flex-wrap items-center justify-center lg:justify-start gap-3.5">
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="pt-3 flex flex-wrap items-center justify-center lg:justify-start gap-3.5"
+            >
               {/* View My Projects */}
-              <button
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 id="hero-view-projects-btn"
                 onClick={() => scrollToSection('projects')}
-                className="inline-flex items-center gap-2 px-6 py-3.5 bg-gradient-to-r from-cyan-500 via-teal-500 to-cyan-600 hover:from-cyan-400 hover:to-teal-500 text-white font-bold text-sm sm:text-base rounded-xl shadow-md shadow-cyan-500/25 hover:shadow-lg hover:shadow-cyan-500/35 transition-all transform active:scale-95"
+                className="inline-flex items-center gap-2 px-6 py-3.5 bg-gradient-to-r from-cyan-500 via-teal-500 to-cyan-600 hover:from-cyan-400 hover:to-teal-500 text-white font-bold text-sm sm:text-base rounded-xl shadow-md shadow-cyan-500/25 hover:shadow-lg hover:shadow-cyan-500/35 transition-all"
               >
                 <span>Explore Featured Apps</span>
                 <ArrowDown className="w-4 h-4" />
-              </button>
+              </motion.button>
 
               {/* Download CV */}
-              <button
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 id="hero-download-cv-btn"
                 onClick={downloadCurrentCV}
-                className="inline-flex items-center gap-2 px-5 py-3.5 bg-white hover:bg-cyan-50/50 text-slate-800 hover:text-cyan-700 font-semibold text-sm sm:text-base rounded-xl border border-slate-200 hover:border-cyan-300 shadow-xs transition-all active:scale-95"
+                className="inline-flex items-center gap-2 px-5 py-3.5 bg-white hover:bg-cyan-50/50 text-slate-800 hover:text-cyan-700 font-semibold text-sm sm:text-base rounded-xl border border-slate-200 hover:border-cyan-300 shadow-xs transition-all"
                 title={data.cvFile ? `Download ${data.cvFile.name}` : 'Upload your CV first'}
               >
                 <Download className="w-4 h-4 text-cyan-600" />
                 <span>{data.cvFile ? 'Download CV' : 'Download CV'}</span>
-              </button>
+              </motion.button>
+
+              {/* Add Picture Option directly on Hero */}
+              <motion.button
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                id="hero-add-my-picture-btn"
+                onClick={() => fileInputRef.current?.click()}
+                className="inline-flex items-center gap-2 px-4 py-3.5 bg-cyan-50 hover:bg-cyan-100/80 text-cyan-800 font-semibold text-sm rounded-xl border border-cyan-300 shadow-xs transition-all"
+                title="Add or update your profile picture"
+              >
+                <Camera className="w-4 h-4 text-cyan-600" />
+                <span>{data.profilePicture?.dataUrl ? 'Change Picture' : '+ Add Picture'}</span>
+              </motion.button>
 
               {/* GitHub */}
-              <a
+              <motion.a
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 id="hero-github-link"
                 href={data.personalInfo.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm rounded-xl shadow-xs hover:shadow-md transition-all active:scale-95"
+                className="inline-flex items-center gap-2 px-4 py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm rounded-xl shadow-xs hover:shadow-md transition-all"
                 title="View GitHub Profile: cinderElla-mpu"
               >
                 <Github className="w-4 h-4 text-cyan-400" />
                 <span>GitHub</span>
-              </a>
+              </motion.a>
 
               {/* LinkedIn (Editable) */}
               {data.personalInfo.linkedInUrl ? (
-                <a
+                <motion.a
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                   id="hero-linkedin-link"
                   href={data.personalInfo.linkedInUrl}
                   target="_blank"
@@ -160,9 +260,11 @@ export const Hero: React.FC = () => {
                 >
                   <Linkedin className="w-4 h-4 text-cyan-600" />
                   <span>LinkedIn</span>
-                </a>
+                </motion.a>
               ) : (
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                   id="hero-add-linkedin-btn"
                   onClick={() => openEditModal('general')}
                   className="inline-flex items-center gap-1.5 px-4 py-3.5 bg-white hover:bg-cyan-50 text-slate-600 hover:text-cyan-700 text-xs sm:text-sm font-medium rounded-xl border border-dashed border-cyan-300 transition-all"
@@ -170,117 +272,224 @@ export const Hero: React.FC = () => {
                 >
                   <Linkedin className="w-4 h-4 text-cyan-500" />
                   <span>+ Add LinkedIn</span>
-                </button>
+                </motion.button>
               )}
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          {/* Right Column: Professional Profile Picture Area */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center">
-            {/* Hidden native file input */}
-            <input
-              type="file"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              accept="image/*"
-              className="hidden"
-              id="profile-picture-file-input"
-            />
+          {/* Right Column: Professional Spotlight Card with animated photo option */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            className="lg:col-span-5 flex flex-col items-center justify-center w-full"
+          >
+            <div className="w-full max-w-md bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-7 border border-cyan-200/80 shadow-xl shadow-cyan-500/5 relative overflow-hidden group">
+              {/* Subtle top ambient glow */}
+              <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-cyan-300/25 to-teal-300/25 rounded-full blur-2xl pointer-events-none -z-10" />
 
-            <div className="relative group w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80">
-              {/* Outer decorative gradient aura */}
-              <div className="absolute -inset-2 rounded-[32px] bg-gradient-to-tr from-cyan-400 via-teal-300 to-sky-400 opacity-60 blur-md group-hover:opacity-90 transition-opacity duration-300" />
-              <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-cyan-500 via-teal-400 to-sky-400 rotate-2 group-hover:rotate-0 transition-transform duration-300 opacity-80" />
-
-              {/* Main Photo Frame */}
-              <div className="relative w-full h-full rounded-3xl bg-white p-2.5 shadow-xl border-2 border-white flex flex-col items-center justify-center overflow-hidden">
-                {data.profilePicture && data.profilePicture.dataUrl ? (
-                  <div className="relative w-full h-full rounded-2xl overflow-hidden group/img">
-                    <img
-                      src={data.profilePicture.dataUrl}
-                      alt="Ella Khanya Mpu - Professional Profile"
-                      className="w-full h-full object-cover object-center rounded-2xl transition-transform duration-500 group-hover/img:scale-105"
-                      referrerPolicy="no-referrer"
-                    />
-
-                    {/* Floating verified badge */}
-                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-slate-900/80 backdrop-blur-md border border-cyan-400/40 text-white text-[11px] font-semibold flex items-center gap-1.5 shadow-sm">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                      <span>Creator Profile</span>
-                    </div>
-
-                    {/* Floating project count badge */}
-                    <div className="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-cyan-600/90 backdrop-blur-md border border-cyan-300 text-white text-xs font-bold flex items-center gap-1 shadow-md">
-                      <Sparkles className="w-3 h-3 text-cyan-200" />
-                      <span>{data.projects.length} Apps Live</span>
-                    </div>
-
-                    {/* Action overlay on hover */}
-                    <div className="absolute inset-0 bg-slate-900/70 backdrop-blur-xs opacity-0 group-hover/img:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2.5 p-4 text-white">
-                      <button
+              {/* Header with Photo/Monogram & Identity */}
+              <div className="flex items-start gap-4 pb-5 border-b border-slate-100">
+                <div className="relative shrink-0">
+                  <AnimatePresence mode="wait">
+                    {data.profilePicture?.dataUrl ? (
+                      <motion.div
+                        key="user-photo"
+                        initial={{ opacity: 0, scale: 0.85 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.85 }}
+                        transition={{ duration: 0.4 }}
                         onClick={() => fileInputRef.current?.click()}
-                        className="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-white rounded-xl text-xs font-bold shadow-md transition-all transform active:scale-95"
+                        className="relative w-18 h-18 sm:w-20 sm:h-20 rounded-2xl overflow-hidden ring-4 ring-cyan-200 shadow-md cursor-pointer group/photo"
+                        title="Click to change profile picture"
                       >
-                        <RefreshCw className="w-3.5 h-3.5" />
-                        <span>Upload New Photo</span>
-                      </button>
+                        <img
+                          src={data.profilePicture.dataUrl}
+                          alt={data.personalInfo.name}
+                          className="w-full h-full object-cover object-center group-hover/photo:scale-105 transition-transform duration-300"
+                        />
+                        <div className="absolute inset-0 bg-slate-900/50 opacity-0 group-hover/photo:opacity-100 transition-opacity flex items-center justify-center text-white">
+                          <Camera className="w-5 h-5 text-cyan-200" />
+                        </div>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="monogram"
+                        initial={{ opacity: 0, scale: 0.85 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.85 }}
+                        transition={{ duration: 0.4 }}
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-gradient-to-tr from-cyan-500 via-teal-500 to-cyan-600 flex flex-col items-center justify-center text-white font-extrabold text-2xl shadow-md ring-4 ring-cyan-100 cursor-pointer group/mono relative"
+                        title="Click to add your picture"
+                      >
+                        <span>EK</span>
+                        <div className="absolute inset-0 rounded-2xl bg-slate-900/60 opacity-0 group-hover/mono:opacity-100 transition-opacity flex flex-col items-center justify-center text-[10px] font-sans font-semibold">
+                          <Plus className="w-4 h-4 text-cyan-300" />
+                          <span>Add Photo</span>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  <span
+                    className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-400 ring-2 ring-white"
+                    title="Active Developer"
+                  />
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <h3 className="font-display font-bold text-slate-900 text-lg sm:text-xl truncate">
+                      {data.personalInfo.name}
+                    </h3>
+                  </div>
+                  <p className="text-xs sm:text-sm font-semibold text-cyan-800 mt-0.5">
+                    AI & Full-Stack Developer
+                  </p>
+
+                  {/* Photo Actions or Add Prompt */}
+                  <div className="mt-2 flex items-center gap-2 flex-wrap">
+                    {data.profilePicture?.dataUrl ? (
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => fileInputRef.current?.click()}
+                          className="inline-flex items-center gap-1 text-[11px] font-semibold text-cyan-700 hover:text-cyan-900 bg-cyan-50 px-2 py-0.5 rounded-md border border-cyan-200 transition-colors"
+                        >
+                          <RefreshCw className="w-3 h-3 text-cyan-600" />
+                          <span>Change Photo</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={removeProfilePicture}
+                          className="inline-flex items-center gap-0.5 text-[11px] font-semibold text-rose-600 hover:text-rose-700 bg-rose-50 px-1.5 py-0.5 rounded-md border border-rose-200 transition-colors"
+                          title="Remove uploaded picture"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ) : (
                       <button
-                        onClick={removeProfilePicture}
-                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-rose-600/90 hover:bg-rose-600 text-white rounded-lg text-xs font-semibold shadow-xs transition-colors"
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="inline-flex items-center gap-1 text-[11px] font-semibold text-cyan-700 hover:text-cyan-900 bg-cyan-50 hover:bg-cyan-100/70 px-2.5 py-1 rounded-full border border-cyan-200 transition-colors shadow-2xs"
                       >
-                        <Trash2 className="w-3.5 h-3.5" />
-                        <span>Reset Photo</span>
+                        <Camera className="w-3 h-3 text-cyan-600" />
+                        <span>+ Add My Picture</span>
                       </button>
-                    </div>
+                    )}
                   </div>
-                ) : (
-                  /* Fallback if somehow photo removed */
-                  <div
-                    onClick={() => fileInputRef.current?.click()}
-                    className="w-full h-full rounded-2xl border-2 border-dashed border-cyan-400 bg-cyan-50/60 hover:bg-cyan-50 transition-colors flex flex-col items-center justify-center p-6 text-center cursor-pointer group/placeholder"
-                  >
-                    <div className="w-16 h-16 rounded-full bg-white shadow-md border border-cyan-300 flex items-center justify-center text-cyan-600 mb-3 group-hover/placeholder:scale-110 transition-transform">
-                      <Camera className="w-8 h-8" />
-                    </div>
-                    <span className="font-display font-bold text-slate-800 text-base mb-1">
-                      Upload Profile Picture
-                    </span>
-                    <p className="text-xs text-slate-600 leading-relaxed max-w-[200px]">
-                      Click to choose a photo from your device.
-                    </p>
-                    <span className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-800 bg-white px-3.5 py-1.5 rounded-xl border border-cyan-300 shadow-2xs">
-                      <UploadCloud className="w-3.5 h-3.5 text-cyan-600" />
-                      Select Photo
-                    </span>
+                </div>
+              </div>
+
+              {/* Key Credentials & Highlights Grid */}
+              <div className="grid grid-cols-2 gap-3 py-5 border-b border-slate-100">
+                <motion.div
+                  whileHover={{ y: -2 }}
+                  className="p-3 rounded-xl bg-slate-50 border border-slate-100/80 space-y-0.5 transition-shadow"
+                >
+                  <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+                    <Award className="w-3.5 h-3.5 text-cyan-600" />
+                    <span>Certifications</span>
                   </div>
-                )}
+                  <div className="font-display font-extrabold text-slate-900 text-base sm:text-lg">
+                    {data.certifications.length} Verified
+                  </div>
+                  <div className="text-[10px] text-cyan-700 font-semibold truncate">
+                    Stanford & Google & IBM
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  whileHover={{ y: -2 }}
+                  className="p-3 rounded-xl bg-slate-50 border border-slate-100/80 space-y-0.5 transition-shadow"
+                >
+                  <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+                    <Code2 className="w-3.5 h-3.5 text-teal-600" />
+                    <span>Applications</span>
+                  </div>
+                  <div className="font-display font-extrabold text-slate-900 text-base sm:text-lg">
+                    {data.projects.length} Published
+                  </div>
+                  <div className="text-[10px] text-teal-700 font-semibold truncate">
+                    Full-Stack & AI Systems
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  whileHover={{ y: -2 }}
+                  className="p-3 rounded-xl bg-slate-50 border border-slate-100/80 space-y-0.5 transition-shadow"
+                >
+                  <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+                    <GraduationCap className="w-3.5 h-3.5 text-sky-600" />
+                    <span>Acceleration</span>
+                  </div>
+                  <div className="font-display font-extrabold text-slate-900 text-sm sm:text-base leading-tight">
+                    CAPACITI 2026
+                  </div>
+                  <div className="text-[10px] text-sky-700 font-semibold truncate">
+                    Matric 2025 Graduate
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  whileHover={{ y: -2 }}
+                  className="p-3 rounded-xl bg-slate-50 border border-slate-100/80 space-y-0.5 transition-shadow"
+                >
+                  <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+                    <MapPin className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>Location</span>
+                  </div>
+                  <div className="font-display font-extrabold text-slate-900 text-sm sm:text-base leading-tight">
+                    South Africa
+                  </div>
+                  <div className="text-[10px] text-emerald-700 font-semibold truncate">
+                    Cape Town & Remote
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Technical Stack Pills */}
+              <div className="pt-4 space-y-2">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-700">
+                  <span className="flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-cyan-600" />
+                    <span>Core Technical Proficiency</span>
+                  </span>
+                  <span className="text-[11px] text-cyan-700 font-semibold">Active Stack</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {['Python', 'PyTorch', 'React', 'TypeScript', 'Tailwind CSS', 'REST APIs', 'Generative AI'].map(
+                    (tech) => (
+                      <motion.span
+                        key={tech}
+                        whileHover={{ scale: 1.05 }}
+                        className="px-2.5 py-1 rounded-lg bg-cyan-50/70 border border-cyan-200/80 text-cyan-900 text-xs font-semibold cursor-default"
+                      >
+                        {tech}
+                      </motion.span>
+                    )
+                  )}
+                </div>
+              </div>
+
+              {/* Verification & Action Banner */}
+              <div className="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5 text-[11px] text-slate-500">
+                  <Sparkles className="w-3.5 h-3.5 text-cyan-600 shrink-0" />
+                  <span>Stanford, DeepLearning.AI & Google</span>
+                </div>
+                <button
+                  onClick={() => scrollToSection('certifications')}
+                  className="inline-flex items-center gap-1 text-xs font-bold text-cyan-700 hover:text-cyan-900 hover:underline shrink-0"
+                >
+                  <span>Verify All</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
               </div>
             </div>
-
-            {/* Picture Controls Underneath */}
-            <div className="mt-4 flex items-center gap-3">
-              <button
-                id="hero-upload-photo-btn"
-                onClick={() => fileInputRef.current?.click()}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-800 hover:text-cyan-900 bg-cyan-50 hover:bg-cyan-100 px-4 py-2 rounded-xl border border-cyan-200 transition-colors shadow-2xs"
-              >
-                <Camera className="w-3.5 h-3.5 text-cyan-600" />
-                <span>Change Photo</span>
-              </button>
-
-              {data.profilePicture && (
-                <button
-                  id="hero-remove-photo-btn"
-                  onClick={removeProfilePicture}
-                  className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-rose-600 px-2 py-1.5 transition-colors"
-                  title="Reset profile picture"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                  <span>Reset</span>
-                </button>
-              )}
-            </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

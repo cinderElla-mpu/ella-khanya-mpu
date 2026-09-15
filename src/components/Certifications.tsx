@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Award, Calendar, ExternalLink, Plus, Edit3, Trash2, BookCheck, ShieldCheck, Copy, Check, UserCheck, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
 import { usePortfolio } from '../context/PortfolioContext.tsx';
 import { CertificationItem } from '../types.ts';
 
@@ -187,11 +188,15 @@ export const Certifications: React.FC = () => {
         {/* Certifications Grid */}
         {filteredCerts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-            {filteredCerts.map((cert) => {
+            {filteredCerts.map((cert, index) => {
               const theme = getProviderTheme(cert);
               return (
-                <div
+                <motion.div
                   key={cert.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-40px' }}
+                  transition={{ duration: 0.45, delay: (index % 4) * 0.08 }}
                   className={`bg-white rounded-3xl p-6 sm:p-7 border border-cyan-100/80 ${theme.hoverBorder} shadow-sm hover:shadow-xl hover:shadow-cyan-500/10 transition-all flex flex-col justify-between group relative overflow-hidden`}
                 >
                   {/* Decorative top accent line */}
@@ -305,7 +310,7 @@ export const Certifications: React.FC = () => {
                       )}
                     </div>
                   )}
-                </div>
+                </motion.div>
               );
             })}
           </div>
